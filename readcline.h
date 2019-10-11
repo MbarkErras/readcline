@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 18:35:32 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/11 22:05:05 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct
 	size_t	row;
 	size_t	column;
 	char	flags;
+	int		clipboard_offset;
 }		t_read;
 
 char	*readcline(char *prompt, t_list *history, char *clipboard);
@@ -46,6 +47,9 @@ void	cline_home_end(t_read *config);
 
 void	cline_insert(t_read *config, char *insertion);
 void	cline_delete(t_read *config, int length);
+void	cline_delete_ctrld(t_read *config);
+
+void	cline_clipboard(t_read *config);
 
 
 int		_putchar(int c);
@@ -73,12 +77,13 @@ int		_putchar(int c);
 # define IS_LEFT(x) (IS_CSI(x) && (x)[2] == 'D')
 # define IS_CURSOR_MOTION(x) (IS_RIGHT(x) || IS_LEFT(x))
 # define IS_HISTORY_MOTION(x) (IS_UP(x) || IS_DOWN(x))
-# define IS_COPY(x) (IS_CSI(x) && (x)[2] == 'D') //
-# define IS_CUT(x) (IS_CSI(x) && (x)[2] == 'D') //
-# define IS_PASTE(x) (IS_CSI(x) && (x)[2] == 'D') //
+# define F_CLIPBOARD 1
+# define IS_CLIPBOARD(x) ((x)[0] == 'x' || (x)[0] == 'c' || (x)[0] == 'v')
+# define IS_COPY(x) ((x)[0] == ESC && (x)[1] == 'c') //
+# define IS_CUT(x) ((x)[0] == ESC && (x)[1] == 'x') //
+# define IS_PASTE(x) ((x)[0] == ESC && (x)[1] == 'v') //
 # define IS_HOME(x) (IS_CSI(x) && (x)[2] == 'H')
 # define IS_END(x) (IS_CSI(x) && (x)[2] == 'F')
-# define IS_CLIPBOARD(x) ((x)[0] == 'x' || (x)[0] == 'c' || (x)[0] == 'v')
 
 # define F_ESC 0
 # define IS_ESC(x) ((x)[0] == ESC)

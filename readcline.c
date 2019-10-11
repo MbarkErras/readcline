@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 18:35:52 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/11 22:04:57 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,24 @@ void	read_sequence(t_read *config)
 		/*
 	else if (IS_HISTORY_MOTION((config->buffer
 		cline_history_motion(config);
-	else if (IS_COPY((config->buffer)
-		continue ;
-	else if (IS_CUT((config->buffer)
-		continue ;
-	else if (IS_PASTE((config->buffer)
-		continue ;
 		*/
+	else if (IS_COPY(config->buffer) || IS_CUT(config->buffer) ||
+		IS_PASTE(config->buffer))
+		cline_clipboard(config);
 	else if (IS_HOME(config->buffer) || IS_END(config->buffer))
 		cline_home_end(config);
 }
 
 void	read_character(t_read *config)
 {
-	if (ft_isprint(config->buffer[0]))
+	if (IS_CLIPBOARD(config->buffer) && F_GET(config->flags, F_ESC))
+	{
+		config->buffer[1] = config->buffer[0];
+		config->buffer[0] = 27;
+		read_sequence(config);
+		F_UNSET(config->flags, F_ESC);
+	}
+	else if (ft_isprint(config->buffer[0]))
 		cline_insert(config, config->buffer);
 	else if (IS_DELETE(config->buffer) || IS_CTRLD(config->buffer))
 		cline_delete(config, 1);
@@ -72,13 +76,6 @@ void	read_character(t_read *config)
 		cline_tab_space(config);
 	else if (IS_ESC(config->buffer))
 		F_SET(config->flags, F_ESC);
-	else if (IS_CLIPBOARD(config->buffer) && F_GET(config->flags, F_ESC))
-	{
-		config->buffer[1] = config->buffer[0];
-		config->buffer[0] = 27;
-		read_sequence(config);
-		F_UNSET(config->flags, F_ESC);
-	}
 }
 
 char	*readcline(char *prompt, t_list *history, char *clipboarad)
@@ -99,7 +96,6 @@ char	*readcline(char *prompt, t_list *history, char *clipboarad)
 			read_character(&config);
 		else
 			read_sequence(&config);
-
 		ft_bzero(config.buffer, 4);
 	}
 	return (*config.input);
