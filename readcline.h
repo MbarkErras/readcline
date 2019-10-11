@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 07:43:24 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/11 13:30:54 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_read	*readcline_config(t_read *set);
 void	cline_cursor_motion(t_read *config);
 void	move_right(t_read *config);
 void	move_left(t_read *config);
+void	cline_wordline_motion(t_read *config);
 
 void	cline_insert(t_read *config, char *insertion);
 void	cline_delete(t_read *config, int length);
@@ -49,8 +50,8 @@ int		_putchar(int c);
 
 # define TAB '\t'
 # define ESC 27
-# define NEXT_WORD 0
-# define PREVIOS_WORD 0 
+# define NEXT_WORD '\n'
+# define PREVIOUS_WORD '\t'
 # define UP_LINE 0
 # define BOTTOM_LINE 0
 
@@ -59,7 +60,9 @@ int		_putchar(int c);
 # define IS_CTRLD(x) ((x)[0] == 4)
 # define IS_NEWLINE(x) (x == '\n')
 # define IS_NEWLINE(x) (x == '\n')
-# define IS_WORD_MOTION(x) (x == NEXT_WORD || x == PREVIOUS_WORD)
+# define IS_WORD_MOTION(x) ((x)[0] == NEXT_WORD || (x)[0]== PREVIOUS_WORD)
+# define IS_NEXT_WORD(x) ((x)[0] == NEXT_WORD)
+# define IS_PREVIOUS_WORD(x) ((x)[0] == PREVIOUS_WORD)
 # define IS_LINE_MOTION(x) (x == UP_LINE || x == BOTTOM_LINE)
 # define IS_WORDLINE_MOTION(x) (IS_WORD_MOTION(x) || IS_LINE_MOTION(x))
 # define IS_CSI(x) ((x)[0] == ESC && (x)[1] == '[')

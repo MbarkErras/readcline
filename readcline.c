@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 07:43:41 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/11 14:37:19 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,10 @@ void	read_character(t_read *config)
 		cline_insert(config, config->buffer); //done
 	else if (IS_DELETE(config->buffer) || IS_CTRLD(config->buffer))
 		cline_delete(config, 1);
-	/*else if (IS_WORDLINE_MOTION((*config.buffer)[0]))
-		cline_wordline_motion_dispatcher(config);
+	else if (IS_WORDLINE_MOTION(config->buffer))
+		cline_wordline_motion(config);
 	else if ((config->buffer[0] == TAB)
 		cline_tab_space(config);
-		*/
 }
 
 void	read_sequence(t_read *config)
@@ -85,7 +84,7 @@ char	*readcline(char *prompt, t_list *history, char *clipboarad)
 			read_character(&config);
 		else
 			read_sequence(&config);
-		if (IS_NEWLINE(config.buffer[0]))
+		if (IS_NEWLINE(config.buffer[0])) //should be first
 		{
 			while ((*config.input)[config.position])
 				move_right(&config);
