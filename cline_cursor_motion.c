@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 21:45:15 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 07:38:02 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/11 18:35:54 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,19 @@ void		cline_cursor_motion(t_read *config)
 		_putchar);
 		config->position += IS_RIGHT(config->buffer) ? 1 : -1;
 		config-> column += IS_RIGHT(config->buffer) ? 1 : -1;
+	}
+}
+
+void	cline_home_end(t_read *config)
+{
+	if (IS_HOME(config->buffer))
+	{
+		while (config->position)
+			move_left(config);
+	}
+	else
+	{
+		while ((*config->input)[config->position])
+			move_right(config);
 	}
 }

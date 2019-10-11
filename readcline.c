@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 14:37:19 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/11 18:35:52 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,17 @@ t_read	init_readcline(char *prompt, t_list *history, char *clipboard)
 	config.flags = 0;
 	config.input = malloc(sizeof(char *));
 	*config.input = ft_strnew(0);
-	config.position = 0; // zero indexed
-	config.column = config.prompt_size + 1; // one indexed
+	config.position = 0;
+	config.column = config.prompt_size + 1;
 	config.row = 0;
+	config.flags = 0;
 	return (config);
-}
-
-void	read_character(t_read *config)
-{
-	if (ft_isprint(config->buffer[0]))
-		cline_insert(config, config->buffer); //done
-	else if (IS_DELETE(config->buffer) || IS_CTRLD(config->buffer))
-		cline_delete(config, 1);
-	else if (IS_WORDLINE_MOTION(config->buffer))
-		cline_wordline_motion(config);
-	else if ((config->buffer[0] == TAB)
-		cline_tab_space(config);
 }
 
 void	read_sequence(t_read *config)
 {
 	if (IS_CURSOR_MOTION((config->buffer)))
-		cline_cursor_motion(config); // done
+		cline_cursor_motion(config);
 		/*
 	else if (IS_HISTORY_MOTION((config->buffer
 		cline_history_motion(config);
@@ -66,11 +55,30 @@ void	read_sequence(t_read *config)
 		continue ;
 	else if (IS_PASTE((config->buffer)
 		continue ;
-	else if (IS_HOME((config->buffer)
-		continue ;
-	else if (IS_END((config->buffer)
-		continue ;
 		*/
+	else if (IS_HOME(config->buffer) || IS_END(config->buffer))
+		cline_home_end(config);
+}
+
+void	read_character(t_read *config)
+{
+	if (ft_isprint(config->buffer[0]))
+		cline_insert(config, config->buffer);
+	else if (IS_DELETE(config->buffer) || IS_CTRLD(config->buffer))
+		cline_delete(config, 1);
+	else if (IS_WORDLINE_MOTION(config->buffer))
+		cline_wordline_motion(config);
+	else if (IS_TAB(config->buffer))
+		cline_tab_space(config);
+	else if (IS_ESC(config->buffer))
+		F_SET(config->flags, F_ESC);
+	else if (IS_CLIPBOARD(config->buffer) && F_GET(config->flags, F_ESC))
+	{
+		config->buffer[1] = config->buffer[0];
+		config->buffer[0] = 27;
+		read_sequence(config);
+		F_UNSET(config->flags, F_ESC);
+	}
 }
 
 char	*readcline(char *prompt, t_list *history, char *clipboarad)
@@ -78,19 +86,20 @@ char	*readcline(char *prompt, t_list *history, char *clipboarad)
 	t_read config;
 
 	config = init_readcline(prompt, history, clipboarad);
-	while (read(0, config.buffer, 4))
+	while (read(0, config.buffer, 3))
 	{
-		if (IS_ONE_CHARACTER(config.buffer))
-			read_character(&config);
-		else
-			read_sequence(&config);
-		if (IS_NEWLINE(config.buffer[0])) //should be first
+		if (IS_NEWLINE(config.buffer[0]))
 		{
 			while ((*config.input)[config.position])
 				move_right(&config);
 			ft_putchar('\n');
 			break ;
 		}
+		if (IS_ONE_CHARACTER(config.buffer))
+			read_character(&config);
+		else
+			read_sequence(&config);
+
 		ft_bzero(config.buffer, 4);
 	}
 	return (*config.input);

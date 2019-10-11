@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 13:30:54 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/11 18:35:32 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ typedef struct
 	t_list	*history;
 	char	*clipboard;
 	char	buffer[4];
-	int		flags;
 	char	**input;
 	struct	winsize winsize;
 	size_t	position;
 	size_t	row;
 	size_t	column;
+	char	flags;
 }		t_read;
 
 char	*readcline(char *prompt, t_list *history, char *clipboard);
@@ -41,6 +41,8 @@ void	cline_cursor_motion(t_read *config);
 void	move_right(t_read *config);
 void	move_left(t_read *config);
 void	cline_wordline_motion(t_read *config);
+void	cline_tab_space(t_read *config);
+void	cline_home_end(t_read *config);
 
 void	cline_insert(t_read *config, char *insertion);
 void	cline_delete(t_read *config, int length);
@@ -48,10 +50,9 @@ void	cline_delete(t_read *config, int length);
 
 int		_putchar(int c);
 
-# define TAB '\t'
 # define ESC 27
-# define NEXT_WORD '\n'
-# define PREVIOUS_WORD '\t'
+# define NEXT_WORD 0
+# define PREVIOUS_WORD 0
 # define UP_LINE 0
 # define BOTTOM_LINE 0
 
@@ -59,7 +60,7 @@ int		_putchar(int c);
 # define IS_DELETE(x) ((x)[0] == 127)
 # define IS_CTRLD(x) ((x)[0] == 4)
 # define IS_NEWLINE(x) (x == '\n')
-# define IS_NEWLINE(x) (x == '\n')
+# define IS_TAB(x) ((x)[0] == '\t')
 # define IS_WORD_MOTION(x) ((x)[0] == NEXT_WORD || (x)[0]== PREVIOUS_WORD)
 # define IS_NEXT_WORD(x) ((x)[0] == NEXT_WORD)
 # define IS_PREVIOUS_WORD(x) ((x)[0] == PREVIOUS_WORD)
@@ -75,8 +76,19 @@ int		_putchar(int c);
 # define IS_COPY(x) (IS_CSI(x) && (x)[2] == 'D') //
 # define IS_CUT(x) (IS_CSI(x) && (x)[2] == 'D') //
 # define IS_PASTE(x) (IS_CSI(x) && (x)[2] == 'D') //
-# define IS_HOME(x) (IS_CSI(x) && (x)[2] == 'D') //
-# define IS_END(x) (IS_CSI(x) && (x)[2] == 'D') //
+# define IS_HOME(x) (IS_CSI(x) && (x)[2] == 'H')
+# define IS_END(x) (IS_CSI(x) && (x)[2] == 'F')
+# define IS_CLIPBOARD(x) ((x)[0] == 'x' || (x)[0] == 'c' || (x)[0] == 'v')
+
+# define F_ESC 0
+# define IS_ESC(x) ((x)[0] == ESC)
+
+# define F_GET(x, f) (x & (1 << f))
+# define F_BGET(x, f) (x & f)
+# define F_SET(x, f) (x |= (1 << f))
+# define F_BSET(x, f) (x |= f)
+# define F_UNSET(x, f) (x &= ~(1 << f))
+# define F_BUNSET(x, f) (x &= ~f)
 
 #endif
 
