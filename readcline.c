@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 01:01:48 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/11 04:59:22 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,16 @@ t_read	init_readcline(char *prompt, t_list *history, char *clipboard)
 	config.flags = 0;
 	config.input = malloc(sizeof(char *));
 	*config.input = ft_strnew(0);
-	config.position = 0;
+	config.position = 0; // zero indexed
+	config.column = config.prompt_size + 1; // one indexed
 	config.row = 0;
-	config.column = config.prompt_size + 1;
 	return (config);
 }
 
 void	read_character(t_read *config)
 {
-	if (ft_isprint((config->buffer[0]))
-		cline_insert(config);
+	if (ft_isprint(config->buffer[0]))
+		cline_insert(config, config->buffer); //done
 	/*else if (IS_DELETE((*config.buffer)[0]))
 		cline_delete(config);
 	else if (IS_WORDLINE_MOTION((*config.buffer)[0]))
@@ -87,8 +87,9 @@ char	*readcline(char *prompt, t_list *history, char *clipboarad)
 			read_sequence(&config);
 		if (IS_NEWLINE(config.buffer[0]))
 		{
-			while ((*config.input)[config->position + 1])
+			while ((*config.input)[config.position])
 				move_right(&config);
+			ft_putchar('\n');
 			break ;
 		}
 		ft_bzero(config.buffer, 4);

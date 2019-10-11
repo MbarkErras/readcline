@@ -5,6 +5,7 @@
 
 static void	set_input_mode(void)
 {
+	tgetent(0, getenv("TERM"));
 	struct termios	tattr;
 
 	/*
