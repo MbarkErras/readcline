@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 04:59:22 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/11 07:43:41 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void	read_character(t_read *config)
 {
 	if (ft_isprint(config->buffer[0]))
 		cline_insert(config, config->buffer); //done
-	/*else if (IS_DELETE((*config.buffer)[0]))
-		cline_delete(config);
-	else if (IS_WORDLINE_MOTION((*config.buffer)[0]))
+	else if (IS_DELETE(config->buffer) || IS_CTRLD(config->buffer))
+		cline_delete(config, 1);
+	/*else if (IS_WORDLINE_MOTION((*config.buffer)[0]))
 		cline_wordline_motion_dispatcher(config);
 	else if ((config->buffer[0] == TAB)
 		cline_tab_space(config);

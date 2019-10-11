@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 21:45:15 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 05:18:37 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/11 07:38:02 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@ static size_t	line_length(char *string, int i)
 	while (string[i] || string[i] == '\n')
 		length++;
 	return (length);
+}
+
+void	move_left(t_read *config)
+{
+	config->buffer[0] = ESC;
+	config->buffer[1] = '[';
+	config->buffer[2] = 'D';
+	cline_cursor_motion(config);
 }
 
 void	move_right(t_read *config)
