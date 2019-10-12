@@ -1,14 +1,17 @@
-NAME=
-	readcline.a
+NAME=readcline.a
 
-SRCS=
+SRCS=cline_clipboard_utilities.c \
+	cline_cursor_motion.c \
+	cline_io.c \
+	cline_wordline_motion.c \
+	middlewares.c \
 	readcline.c
-	cline_cursor_motion.c
 
 OBJS=$(SRCS:.c=.o)
 
-LIBFT_DIR=libft
-SIMPLIST_DIR=simplist
+LIBS_DIR=libs
+OBJS_DIR=build
+SRCS_DIR=srcs
 OBJS_PATH=$(addprefix $(OBJS_DIR)/, $(OBJS))
 SRCS_PATH=$(addprefix $(SRCS_DIR)/, $(SRCS))
 INCLUDES=includes
@@ -18,30 +21,19 @@ FLAGS= -Wall -Werror -Wextra
 all: $(NAME)
 
 $(NAME): $(OBJS_PATH) $(INCLUDES)/readcline.h 
-	make -C $(LIBFT_DIR)
-	make -C $(SIMPLIST_DIR)
-	gcc $(FLAGS) $(OBJS_PATH) -ltermcap $(LIBFT_DIR)/libft.a $(SIMPLIST_DIR)/simplist.a  -o $(NAME)
+	ar rc  $(NAME) $(OBJS_PATH)
+	ranlib $(NAME)
 
 $(OBJS_PATH): $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c | $(OBJS_DIR)
-	gcc $(FLAGS) -I$(INCLUDES) -I$(LIBFT_DIR)/includes -I$(SIMPLIST_DIR) -c $< -o $@
+	gcc $(FLAGS) -I$(INCLUDES) -I$(INCLUDES) -c $< -o $@
 
 $(OBJS_DIR):
 	mkdir $(OBJS_DIR)
 
 clean:
-	make -C $(LIBFT_DIR) clean
-	make -C $(SIMPLIST_DIR) clean
 	rm -rf $(OBJS_DIR)
 
 fclean: clean
-	make -C $(LIBFT_DIR) fclean
-	make -C $(SIMPLIST_DIR) fclean
 	rm -rf $(NAME)
 
-re: relib fclean all
-
-relib:
-	make -C $(LIBFT_DIR) re
-	make -C $(SIMPLIST_DIR) re
-
-
+re: fclean all
