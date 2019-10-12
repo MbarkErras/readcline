@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 21:45:15 by merras            #+#    #+#             */
-/*   Updated: 2019/10/12 13:50:12 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/12 16:08:02 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,47 +24,24 @@ static size_t	line_length(char *string, int i)
 	return (length);
 }
 
-void	move_left(t_read *config)
-{
-	char	temp[4];
-
-	ft_memcpy(temp, config->buffer, 4);
-	config->buffer[0] = ESC;
-	config->buffer[1] = '[';
-	config->buffer[2] = 'D';
-	cline_cursor_motion(config);
-	ft_memcpy(config->buffer, temp, 4);
-}
-
-void	move_right(t_read *config)
-{
-	char	temp[4];
-
-	ft_memcpy(temp, config->buffer, 4);
-	config->buffer[0] = ESC;
-	config->buffer[1] = '[';
-	config->buffer[2] = 'C';
-	cline_cursor_motion(config);
-	ft_memcpy(config->buffer, temp, 4);
-}
-
 void		cline_cursor_motion(t_read *config)
+{
+	if ((IS_RIGHT(config->buffer) && !(*config->input)[config->position]) ||
+		(IS_LEFT(config->buffer) && (!config->position ||
+			(F_GET(config->flags, F_CLIPBOARD) &&
+			config->position == config->clipboard_offset))))
+		return ;
+	if (IS_RIGHT(config->buffer))
+		move_right(config);
+	else
+		move_left(config);
+}
+
+void	move_left(t_read *config)
 {
 	int	length;
 
-	if ((IS_RIGHT(config->buffer) && !(*config->input)[config->position]) ||
-		(IS_LEFT(config->buffer) && !config->position))
-		return ;
-	if (IS_RIGHT(config->buffer) &&
-		(config->column == config->winsize.ws_row ||
-		IS_NEWLINE((*config->input)[config->position + 1])))
-	{
-		tputs(tgetstr("do", NULL), 1, _putchar);
-		config->position++;
-		config->row++;
-		config->column = 0;
-	}
-	else if (IS_LEFT(config->buffer) && config->column == 1)
+	if (config->column == 1)
 	{
 		length = line_length(*config->input, config->position);
 		tputs(tgetstr("up", NULL), 1, _putchar);
@@ -77,10 +54,39 @@ void		cline_cursor_motion(t_read *config)
 	}
 	else
 	{
-		tputs(tgetstr(IS_RIGHT(config->buffer) ? "nd" : "le", NULL), 1,
-		_putchar);
-		config->position += IS_RIGHT(config->buffer) ? 1 : -1;
-		config-> column += IS_RIGHT(config->buffer) ? 1 : -1;
+		tputs(tgetstr("le", NULL), 1, _putchar);
+		if (F_GET(config->flags, F_CLIPBOARD))
+		{
+			ft_putchar((*config->input)[config->position - 1]);
+			tputs(tgetstr("le", NULL), 1, _putchar);
+		}
+		config->position--;
+		config->column--;
+	}
+}
+
+void	move_right(t_read *config)
+{
+	if ((config->column == config->winsize.ws_row ||
+	IS_NEWLINE((*config->input)[config->position + 1])))
+	{
+		tputs(tgetstr("do", NULL), 1, _putchar);
+		config->position++;
+		config->row++;
+		config->column = 0;
+	}
+	else
+	{
+		if (F_GET(config->flags, F_CLIPBOARD))
+		{
+			tputs(tgetstr("us", NULL), 1, _putchar);
+			ft_putchar((*config->input)[config->position]);
+			tputs(tgetstr("ue", NULL), 1, _putchar);
+		}
+		else
+			tputs(tgetstr("nd", NULL), 1, _putchar);
+		config->position++;
+		config->column++;
 	}
 }
 
