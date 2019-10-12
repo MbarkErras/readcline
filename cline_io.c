@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 00:07:48 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 22:05:01 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/12 13:53:51 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*tab_spaces(int offset)
 	if (offset == 3)
 		return (" ");
 	if (offset == 4)
-		return (" ");
+		return ("");
 	else
 		return ("essketit");
 }

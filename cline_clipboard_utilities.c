@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 17:25:07 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 22:04:53 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/12 13:50:15 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	cline_clipboard(t_read *config)
 		cline_insert(config, config->clipboard);
 	else if (IS_COPY(config->buffer) || IS_CUT(config->buffer))
 	{
-
 		if (!F_GET(config->flags, F_CLIPBOARD))
 		{
 			F_SET(config->flags, F_CLIPBOARD);
@@ -33,8 +32,7 @@ void	cline_clipboard(t_read *config)
 			config->clipboard = ft_strsub(*config->input,
 			config->clipboard_offset, length);
 			F_UNSET(config->flags, F_CLIPBOARD);
-			while (length--)
-				cline_delete_ctrld(config);
+			cline_delete(config, length);
 			if (IS_COPY(config->buffer))
 				cline_insert(config, config->clipboard);
 		}
