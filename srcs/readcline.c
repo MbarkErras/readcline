@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/13 00:56:21 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/13 01:17:03 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_read	*readcline_config(t_read *set)
 	return (config);
 }
 
-t_read	init_readcline(char *prompt, t_list *history, char *clipboard)
+t_read	init_readcline(char *prompt, t_list *history, char **clipboard)
 {
 	t_read	config;
 
@@ -76,7 +76,7 @@ void	read_character(t_read *config)
 		F_SET(config->flags, F_ESC);
 }
 
-char	*readcline(char *prompt, t_list *history, char *clipboarad)
+char	*readcline(char *prompt, t_list *history, char **clipboarad)
 {
 	t_read config;
 

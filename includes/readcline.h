@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/13 00:56:46 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/13 01:16:40 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct
 {
 	int		prompt_size;
 	t_list	*history;
-	char	*clipboard;
+	char	**clipboard;
 	char	buffer[4];
 	char	**input;
 	struct	winsize winsize;
@@ -33,8 +33,8 @@ typedef struct
 	int		clipboard_offset;
 }		t_read;
 
-char	*readcline(char *prompt, t_list *history, char *clipboard);
-t_read	init_readcline(char *prompt, t_list *history, char *clipboard);
+char	*readcline(char *prompt, t_list *history, char **clipboard);
+t_read	init_readcline(char *prompt, t_list *history, char **clipboard);
 void	flushcline(char *prompt);
 t_read	*readcline_config(t_read *set);
 
