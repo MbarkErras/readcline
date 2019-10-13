@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/11 22:05:05 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/13 00:56:46 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	cline_delete_ctrld(t_read *config);
 
 void	cline_clipboard(t_read *config);
 
+void	cline_history_motion(t_read *config);
 
 int		_putchar(int c);
 
@@ -76,6 +77,7 @@ int		_putchar(int c);
 # define IS_RIGHT(x) (IS_CSI(x) && (x)[2] == 'C')
 # define IS_LEFT(x) (IS_CSI(x) && (x)[2] == 'D')
 # define IS_CURSOR_MOTION(x) (IS_RIGHT(x) || IS_LEFT(x))
+# define F_HISTORY 2
 # define IS_HISTORY_MOTION(x) (IS_UP(x) || IS_DOWN(x))
 # define F_CLIPBOARD 1
 # define IS_CLIPBOARD(x) ((x)[0] == 'x' || (x)[0] == 'c' || (x)[0] == 'v')

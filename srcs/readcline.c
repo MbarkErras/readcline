@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/12 15:31:24 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/13 00:56:21 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,8 @@ void	read_sequence(t_read *config)
 {
 	if (IS_CURSOR_MOTION((config->buffer)))
 		cline_cursor_motion(config);
-		/*
-	else if (IS_HISTORY_MOTION((config->buffer
+	else if (IS_HISTORY_MOTION((config->buffer)))
 		cline_history_motion(config);
-		*/
 	else if (IS_COPY(config->buffer) || IS_CUT(config->buffer) ||
 		IS_PASTE(config->buffer))
 		cline_clipboard(config);
