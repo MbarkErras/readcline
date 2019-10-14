@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/13 00:18:02 by merras            #+#    #+#             */
-/*   Updated: 2019/10/14 16:34:40 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 17:18:25 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	cline_history_motion(t_read *config)
 			cline_insert(config, "");
 			while ((*config->context)[config->position])
 				move_right(config);
+			F_UNSET(config->flags, F_HISTORY);
+			return ;
 		}
 		config->history = IS_UP(config->buffer) ? config->history->prev :
 		config->history->next;

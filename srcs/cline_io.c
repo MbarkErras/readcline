@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 00:07:48 by merras            #+#    #+#             */
-/*   Updated: 2019/10/14 17:02:38 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 17:16:00 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	cline_insert(t_read *config, char *insertion)
 
 	length = ft_strlen(insertion);
 	tputs(tgetstr("sc", NULL), 1, _putchar);
-	ft_putnbr(config->position);
 	i = (*config->context)[config->position];
 	(*config->context)[config->position] = 0;
 	ft_putstr(insertion);
