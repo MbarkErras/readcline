@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/13 00:18:02 by merras            #+#    #+#             */
-/*   Updated: 2019/10/14 17:38:58 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 18:46:12 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	cline_history_motion(t_read *config)
 {
-	if (IS_DOWN(config->buffer) && !config->history->next)
+	if (IS_DOWN(config->buffer) && config->history && !config->history->next)
 	{
 		while (config->position)
 			move_left(config);
