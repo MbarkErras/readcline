@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 21:45:15 by merras            #+#    #+#             */
-/*   Updated: 2019/10/13 00:18:20 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 15:10:13 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ void	move_left(t_read *config)
 
 void	move_right(t_read *config)
 {
-	if ((config->column == config->winsize.ws_row ||
+	if ((config->column == config->winsize.ws_col ||
 	IS_NEWLINE((*config->input)[config->position + 1])))
 	{
 		tputs(tgetstr("do", NULL), 1, _putchar);
 		config->position++;
 		config->row++;
-		config->column = 0;
+		config->column = 1;
 	}
 	else
 	{
