@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 00:07:48 by merras            #+#    #+#             */
-/*   Updated: 2019/10/12 21:46:32 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 17:02:38 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,16 @@ void	cline_insert(t_read *config, char *insertion)
 
 	length = ft_strlen(insertion);
 	tputs(tgetstr("sc", NULL), 1, _putchar);
-	i = (*config->input)[config->position];
-	(*config->input)[config->position] = 0;
+	ft_putnbr(config->position);
+	i = (*config->context)[config->position];
+	(*config->context)[config->position] = 0;
 	ft_putstr(insertion);
-	inserted = ft_strjoin(*config->input, insertion);
-	(*config->input)[config->position] = i;
-	ft_putstr(*config->input + config->position);
-	inserted = ft_strjoin_free(inserted, *config->input + config->position, 1);
-	free(*config->input);
-	*config->input = inserted;
+	inserted = ft_strjoin(*config->context, insertion);
+	(*config->context)[config->position] = i;
+	ft_putstr(*config->context + config->position);
+	inserted = ft_strjoin_free(inserted, *config->context + config->position, 1);
+	free(*config->context);
+	*config->context = inserted;
 	tputs(tgetstr("rc", NULL), 1, _putchar);
 	length++;
 	while (--length)
@@ -60,15 +61,15 @@ void	cline_delete_ctrld(t_read *config)
 {
 	int		i;
 
-	if (!ft_strlen(*config->input))
+	if (!ft_strlen(*config->context))
 		exit(EXIT_SUCCESS);
 	tputs(tgetstr("cd", NULL), 1, _putchar);
 	tputs(tgetstr("sc", NULL), 1, _putchar);
-	i = (*config->input)[config->position];
-	(*config->input)[config->position] = 0;
-	*config->input = ft_strjoin_free(*config->input,
-	*config->input + config->position + 1, 1);
-	ft_putstr(*config->input + config->position);
+	i = (*config->context)[config->position];
+	(*config->context)[config->position] = 0;
+	*config->context = ft_strjoin_free(*config->context,
+	*config->context + config->position + 1, 1);
+	ft_putstr(*config->context + config->position);
 	tputs(tgetstr("rc", NULL), 1, _putchar);
 }
 
@@ -88,10 +89,10 @@ void	cline_delete(t_read *config, int length)
 		move_left(config);
 	tputs(tgetstr("cd", NULL), 1, _putchar);
 	tputs(tgetstr("sc", NULL), 1, _putchar);
-	i = (*config->input)[config->position];
-	(*config->input)[config->position] = 0;
-	*config->input = ft_strjoin_free(*config->input, *config->input +
+	i = (*config->context)[config->position];
+	(*config->context)[config->position] = 0;
+	*config->context = ft_strjoin_free(*config->context, *config->context +
 	config->position + length, 1);
-	ft_putstr(*config->input + config->position);
+	ft_putstr(*config->context + config->position);
 	tputs(tgetstr("rc", NULL), 1, _putchar);
 }

@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/13 01:16:40 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 17:01:22 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ typedef struct
 	t_list	*history;
 	char	**clipboard;
 	char	buffer[4];
-	char	**input;
+	char	**context;
+	char	*input;
 	struct	winsize winsize;
 	size_t	position;
 	size_t	row;
@@ -34,7 +35,7 @@ typedef struct
 }		t_read;
 
 char	*readcline(char *prompt, t_list *history, char **clipboard);
-t_read	init_readcline(char *prompt, t_list *history, char **clipboard);
+void	init_readcline(char *prompt, t_list *history, char **clipboard, t_read *config);
 void	flushcline(char *prompt);
 t_read	*readcline_config(t_read *set);
 

@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 21:45:15 by merras            #+#    #+#             */
-/*   Updated: 2019/10/14 15:35:56 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 16:26:09 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static size_t	line_length(char *string, int end)
 
 void		cline_cursor_motion(t_read *config)
 {
-	if ((IS_RIGHT(config->buffer) && !(*config->input)[config->position]) ||
+	if ((IS_RIGHT(config->buffer) && !(*config->context)[config->position]) ||
 		(IS_LEFT(config->buffer) && (!config->position ||
 			(F_GET(config->flags, F_CLIPBOARD) &&
 			config->position == (size_t)config->clipboard_offset))))
@@ -44,14 +44,14 @@ void	move_left(t_read *config)
 
 	if (config->column == 1)
 	{
-		length = line_length(*config->input, config->position) %
+		length = line_length(*config->context, config->position) %
 		config->winsize.ws_col;
 		tputs(tgetstr("up", NULL), 1, _putchar);
-		tputs(tparm(tgetstr("RI", NULL), (*config->input)[config->position - 1]
+		tputs(tparm(tgetstr("RI", NULL), (*config->context)[config->position - 1]
 		== '\n' ? length : config->winsize.ws_col), 1, _putchar);
 		config->position--;
 		config->row--;
-		config->column = (*config->input)[config->position - 1] == '\n' ?
+		config->column = (*config->context)[config->position - 1] == '\n' ?
 		length : config->winsize.ws_col;
 	}
 	else
@@ -59,7 +59,7 @@ void	move_left(t_read *config)
 		tputs(tgetstr("le", NULL), 1, _putchar);
 		if (F_GET(config->flags, F_CLIPBOARD))
 		{
-			ft_putchar((*config->input)[config->position - 1]);
+			ft_putchar((*config->context)[config->position - 1]);
 			tputs(tgetstr("le", NULL), 1, _putchar);
 		}
 		config->position--;
@@ -70,7 +70,7 @@ void	move_left(t_read *config)
 void	move_right(t_read *config)
 {
 	if ((config->column == config->winsize.ws_col ||
-	IS_NEWLINE((*config->input)[config->position + 1])))
+	IS_NEWLINE((*config->context)[config->position + 1])))
 	{
 		tputs(tgetstr("do", NULL), 1, _putchar);
 		config->position++;
@@ -82,7 +82,7 @@ void	move_right(t_read *config)
 		if (F_GET(config->flags, F_CLIPBOARD))
 		{
 			tputs(tgetstr("us", NULL), 1, _putchar);
-			ft_putchar((*config->input)[config->position]);
+			ft_putchar((*config->context)[config->position]);
 			tputs(tgetstr("ue", NULL), 1, _putchar);
 		}
 		else
@@ -101,7 +101,7 @@ void	cline_home_end(t_read *config)
 	}
 	else
 	{
-		while ((*config->input)[config->position])
+		while ((*config->context)[config->position])
 			move_right(config);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 17:25:07 by merras            #+#    #+#             */
-/*   Updated: 2019/10/13 01:15:43 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 16:25:58 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	cline_clipboard(t_read *config)
 		{
 			free(*config->clipboard);
 			length = config->position - config->clipboard_offset;
-			*config->clipboard = ft_strsub(*config->input,
+			*config->clipboard = ft_strsub(*config->context,
 			config->clipboard_offset, length);
 			F_UNSET(config->flags, F_CLIPBOARD);
 			cline_delete(config, length);

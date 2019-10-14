@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/14 15:07:28 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 17:02:16 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,22 @@ t_read	*readcline_config(t_read *set)
 	return (config);
 }
 
-t_read	init_readcline(char *prompt, t_list *history, char **clipboard)
+void	init_readcline(char *prompt, t_list *history, char **clipboard, t_read *config)
 {
-	t_read	config;
-
-	readcline_config(&config);
+	readcline_config(config);
 	ft_putstr(prompt);
-	ft_bzero(config.buffer, 4);
-	ioctl(1, TIOCGWINSZ, &(config.winsize));
-	config.prompt_size = ft_strlen(prompt);
-	config.history = history;
-	config.clipboard = clipboard;
-	config.flags = 0;
-	config.input = malloc(sizeof(char *));
-	*config.input = ft_strnew(0);
-	config.position = 0;
-	config.column = config.prompt_size + 1;
-	config.row = 0;
-	config.flags = 0;
-	return (config);
+	ft_bzero(config->buffer, 4);
+	ioctl(1, TIOCGWINSZ, &(config->winsize));
+	config->prompt_size = ft_strlen(prompt);
+	config->history = list_head_tail(history, 1);
+	config->clipboard = clipboard;
+	config->flags = 0;
+	config->input = ft_strnew(0);
+	config->context = &(config->input);
+	config->position = 0;
+	config->column = config->prompt_size + 1;
+	config->row = 0;
+	config->flags = 0;
 }
 
 void	read_sequence(t_read *config)
@@ -76,16 +73,16 @@ void	read_character(t_read *config)
 		F_SET(config->flags, F_ESC);
 }
 
-char	*readcline(char *prompt, t_list *history, char **clipboarad)
+char	*readcline(char *prompt, t_list *history, char **clipboard)
 {
 	t_read config;
 
-	config = init_readcline(prompt, history, clipboarad);
+	init_readcline(prompt, history, clipboard, &config);
 	while (read(0, config.buffer, 3))
 	{
 		if (IS_NEWLINE(config.buffer[0]))
 		{
-			while ((*config.input)[config.position])
+			while ((*config.context)[config.position])
 				move_right(&config);
 			ft_putchar('\n');
 			break ;
@@ -96,5 +93,6 @@ char	*readcline(char *prompt, t_list *history, char **clipboarad)
 			read_sequence(&config);
 		ft_bzero(config.buffer, 4);
 	}
-	return (*config.input);
+	return (*config.context == config.input ? config.input :
+	ft_strdup(*config.context));
 }
