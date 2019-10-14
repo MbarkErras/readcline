@@ -6,21 +6,22 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 21:45:15 by merras            #+#    #+#             */
-/*   Updated: 2019/10/14 15:10:13 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 15:35:56 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "readcline.h"
 
-static size_t	line_length(char *string, int i)
+static size_t	line_length(char *string, int end)
 {
 	int	length;
 
 	length = 0;
-	while (i || string[i] == '\n')
-		i--;
-	while (string[i] || string[i] == '\n')
+	while (end > -1 && string[end] != '\n')
+	{
 		length++;
+		end--;
+	}
 	return (length);
 }
 
@@ -43,14 +44,15 @@ void	move_left(t_read *config)
 
 	if (config->column == 1)
 	{
-		length = line_length(*config->input, config->position);
+		length = line_length(*config->input, config->position) %
+		config->winsize.ws_col;
 		tputs(tgetstr("up", NULL), 1, _putchar);
-		tputs(tparm(tgetstr("RI", NULL), length > config->winsize.ws_col ?
-		config->winsize.ws_col : length), 1, _putchar);
+		tputs(tparm(tgetstr("RI", NULL), (*config->input)[config->position - 1]
+		== '\n' ? length : config->winsize.ws_col), 1, _putchar);
 		config->position--;
 		config->row--;
-		config->column = length > config->winsize.ws_col ?
-		config->winsize.ws_col : length;
+		config->column = (*config->input)[config->position - 1] == '\n' ?
+		length : config->winsize.ws_col;
 	}
 	else
 	{
