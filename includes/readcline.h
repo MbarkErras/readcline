@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/14 17:01:22 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/14 17:28:22 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,6 @@ int		_putchar(int c);
 # define F_UNSET(x, f) (x &= ~(1 << f))
 # define F_BUNSET(x, f) (x &= ~f)
 
+# define F_INPUT 7
+
 #endif
-
-
