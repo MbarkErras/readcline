@@ -6,31 +6,17 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 00:07:48 by merras            #+#    #+#             */
-/*   Updated: 2019/10/14 17:16:00 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/16 00:44:38 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "readcline.h"
 
-static char	*tab_spaces(int offset)
-{
-	if (!offset)
-		return ("    ");
-	if (offset == 1)
-		return ("   ");
-	if (offset == 2)
-		return ("  ");
-	if (offset == 3)
-		return (" ");
-	if (offset == 4)
-		return ("");
-	else
-		return ("essketit");
-}
-
 void	cline_tab_space(t_read *config)
 {
-	cline_insert(config, tab_spaces(config->column % 4));
+	char	tabs[4][5] = {"    ", "   ", "  ", " "};
+
+	cline_insert(config, tabs[config->column % 4]);
 }
 
 void	cline_insert(t_read *config, char *insertion)
