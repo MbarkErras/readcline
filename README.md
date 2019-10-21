@@ -1,3 +1,4 @@
+![building status](https://travis-ci.org/MbarkErras/readcline.svg?branch=master)
 # readcline
 coding something like readline using the termcaps obsolete library
 
