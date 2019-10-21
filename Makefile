@@ -2,6 +2,7 @@ NAME=readcline.a
 
 SRCS=cline_clipboard_utilities.c \
 	cline_cursor_motion.c \
+	readcline_utilities.c \
 	cline_io.c \
 	cline_wordline_motion.c \
 	middlewares.c \

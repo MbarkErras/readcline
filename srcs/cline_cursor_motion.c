@@ -6,13 +6,13 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 21:45:15 by merras            #+#    #+#             */
-/*   Updated: 2019/10/14 16:26:09 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/20 22:33:35 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "readcline.h"
 
-static size_t	line_length(char *string, int end)
+size_t	line_length(char *string, int end)
 {
 	int	length;
 
@@ -25,7 +25,7 @@ static size_t	line_length(char *string, int end)
 	return (length);
 }
 
-void		cline_cursor_motion(t_read *config)
+void	cline_cursor_motion(t_read *config)
 {
 	if ((IS_RIGHT(config->buffer) && !(*config->context)[config->position]) ||
 		(IS_LEFT(config->buffer) && (!config->position ||
@@ -40,27 +40,15 @@ void		cline_cursor_motion(t_read *config)
 
 void	move_left(t_read *config)
 {
-	int	length;
-
 	if (config->column == 1)
-	{
-		length = line_length(*config->context, config->position) %
-		config->winsize.ws_col;
-		tputs(tgetstr("up", NULL), 1, _putchar);
-		tputs(tparm(tgetstr("RI", NULL), (*config->context)[config->position - 1]
-		== '\n' ? length : config->winsize.ws_col), 1, _putchar);
-		config->position--;
-		config->row--;
-		config->column = (*config->context)[config->position - 1] == '\n' ?
-		length : config->winsize.ws_col;
-	}
+		left_wrapper(config);
 	else
 	{
-		tputs(tgetstr("le", NULL), 1, _putchar);
+		tputs(tgetstr("le", NULL), 1, termcaps_putchar);
 		if (F_GET(config->flags, F_CLIPBOARD))
 		{
 			ft_putchar((*config->context)[config->position - 1]);
-			tputs(tgetstr("le", NULL), 1, _putchar);
+			tputs(tgetstr("le", NULL), 1, termcaps_putchar);
 		}
 		config->position--;
 		config->column--;
@@ -72,7 +60,7 @@ void	move_right(t_read *config)
 	if ((config->column == config->winsize.ws_col ||
 	IS_NEWLINE((*config->context)[config->position + 1])))
 	{
-		tputs(tgetstr("do", NULL), 1, _putchar);
+		tputs(tgetstr("do", NULL), 1, termcaps_putchar);
 		config->position++;
 		config->row++;
 		config->column = 1;
@@ -81,12 +69,12 @@ void	move_right(t_read *config)
 	{
 		if (F_GET(config->flags, F_CLIPBOARD))
 		{
-			tputs(tgetstr("us", NULL), 1, _putchar);
+			tputs(tgetstr("us", NULL), 1, termcaps_putchar);
 			ft_putchar((*config->context)[config->position]);
-			tputs(tgetstr("ue", NULL), 1, _putchar);
+			tputs(tgetstr("ue", NULL), 1, termcaps_putchar);
 		}
 		else
-			tputs(tgetstr("nd", NULL), 1, _putchar);
+			tputs(tgetstr("nd", NULL), 1, termcaps_putchar);
 		config->position++;
 		config->column++;
 	}
