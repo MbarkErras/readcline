@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/25 23:05:36 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/25 23:16:30 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*readcline(char *prompt, t_list *history, char **clipboard)
 {
 	t_read config;
 
-	init_readcline(prompt, history, clipboard, &config);
+	init_readcline(ft_strdup(prompt), history, clipboard, &config);
 	while (read(0, config.buffer, 3))
 	{
 		if (IS_NEWLINE(config.buffer[0]))
