@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/25 22:43:48 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/25 22:55:23 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char				*readcline(char *prompt, t_list *history,
 					char **clipboard);
 void				init_readcline(char *prompt, t_list *hisory,
 					char **clipboard, t_read *config);
-void				flushcline(char *prompt);
+void				flushcline(int sig);
 t_read				*readcline_config(t_read *set);
 
 void				cline_cursor_motion(t_read *config);

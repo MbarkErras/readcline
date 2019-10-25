@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/25 22:39:12 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/25 22:54:26 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	init_readcline(char *prompt, t_list *history, char **clipboard,
 	config->flags = 0;
 }
 
-void	flush_readcline(int sig)
+void	flushcline(int sig)
 {
 	init_readcline(NULL, NULL, NULL, readcline_config(NULL));
 }
