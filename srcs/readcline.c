@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/21 02:32:52 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/25 22:39:12 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,7 @@ t_read	*readcline_config(t_read *set)
 	return (config);
 }
 
-void	init_readcline(char *prompt, t_list *history, char **clipboard,
-		t_read *config)
-{
-	readcline_config(config);
-	ft_putstr(prompt);
-	ft_bzero(config->buffer, 4);
-	ioctl(1, TIOCGWINSZ, &(config->winsize));
-	config->prompt_size = ft_strlen(prompt);
-	config->history = list_head_tail(history, 1);
-	config->clipboard = clipboard;
-	config->flags = 0;
-	config->input = ft_strnew(0);
-	config->context = &(config->input);
-	config->position = 0;
-	config->column = config->prompt_size + 1;
-	config->row = 0;
-	config->flags = 0;
-}
+
 
 void	read_sequence(t_read *config)
 {
@@ -78,6 +61,33 @@ void	read_character(t_read *config)
 		else if (IS_TAB(config->buffer))
 			cline_tab_space(config);
 	}
+}
+
+void	init_readcline(char *prompt, t_list *history, char **clipboard,
+		t_read *config)
+{
+	readcline_config(config);
+	ft_putstr(prompt);
+	ft_bzero(config->buffer, 4);
+	ioctl(1, TIOCGWINSZ, &(config->winsize));
+	config->prompt_size = prompt ? config->prompt_size : ft_strlen(prompt);
+	config->prompt = prompt ? config->prompt : ft_strdup(prompt);
+	config->history = prompt ? config->history : list_head_tail(history, 1);
+	config->clipboard = prompt ? config->clipboard : clipboard;
+	config->flags = 0;
+	if (!prompt)
+		ft_strdel(&config->input);
+	config->input = ft_strnew(0);
+	config->context = &(config->input);
+	config->position = 0;
+	config->column = config->prompt_size + 1;
+	config->row = 0;
+	config->flags = 0;
+}
+
+void	flush_readcline(int sig)
+{
+	init_readcline(NULL, NULL, NULL, readcline_config(NULL));
 }
 
 char	*readcline(char *prompt, t_list *history, char **clipboard)

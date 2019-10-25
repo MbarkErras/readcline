@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/21 00:03:06 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/25 22:05:01 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 typedef struct		s_read
 {
 	int				prompt_size;
+	char			*prompt;
 	t_list			*history;
 	char			**clipboard;
 	char			buffer[4];
