@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/25 23:17:51 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/25 23:38:45 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void	init_readcline(char *prompt, t_list *history, char **clipboard,
 	ft_bzero(config->buffer, 4);
 	ioctl(1, TIOCGWINSZ, &(config->winsize));
 	config->prompt_size = prompt ? config->prompt_size : ft_strlen(prompt);
-	config->prompt = prompt ? config->prompt : ft_strdup(prompt);
-	config->history = prompt ? config->history : list_head_tail(history, 1);
-	config->clipboard = prompt ? config->clipboard : clipboard;
+	config->prompt = !prompt ? config->prompt : ft_strdup(prompt);
+	config->history = !prompt ? config->history : list_head_tail(history, 1);
+	config->clipboard = !prompt ? config->clipboard : clipboard;
 	config->flags = 0;
 	if (!prompt)
 		ft_strdel(&config->input);
@@ -95,7 +95,7 @@ char	*readcline(char *prompt, t_list *history, char **clipboard)
 {
 	t_read config;
 
-	init_readcline(ft_strdup(prompt), history, clipboard, &config);
+	init_readcline(prompt, history, clipboard, &config);
 	while (read(0, config.buffer, 3))
 	{
 		if (IS_NEWLINE(config.buffer[0]))
