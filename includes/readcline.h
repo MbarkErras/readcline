@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/25 22:05:01 by merras           ###   ########.fr       */
+/*   Updated: 2019/10/25 22:43:48 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define READCLINE_H
 
 # include "simplist.h"
-# include "libft.h"
+# include "centropy.h"
 # include <sys/ioctl.h>
 # include <term.h>
 
