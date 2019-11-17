@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/10/26 00:37:32 by merras           ###   ########.fr       */
+/*   Updated: 2019/11/17 21:28:45 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	read_character(t_read *config)
 void	init_readcline(char *prompt, t_list *history, char **clipboard,
 		t_read *config)
 {
+	init_terminal();
 	readcline_config(config);
 	ft_putstr(prompt ? prompt : config->prompt);
 	ft_bzero(config->buffer, 4);
@@ -111,6 +112,7 @@ char	*readcline(char *prompt, t_list *history, char **clipboard)
 			read_sequence(&config);
 		ft_bzero(config.buffer, 4);
 	}
+	reset_input_mode();
 	return (*config.context == config.input ? config.input :
 	ft_strdup(*config.context));
 }

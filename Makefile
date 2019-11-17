@@ -7,7 +7,8 @@ SRCS=cline_clipboard_utilities.c \
 	cline_wordline_motion.c \
 	middlewares.c \
 	cline_history.c \
-	readcline.c
+	readcline.c \
+	terminal_configuration.c
 
 OBJS=$(SRCS:.c=.o)
 

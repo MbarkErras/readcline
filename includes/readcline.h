@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/10/26 00:37:43 by merras           ###   ########.fr       */
+/*   Updated: 2019/11/17 21:23:25 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct		s_read
 	size_t			column;
 	char			flags;
 	int				clipboard_offset;
+	struct termios	saved_attr;
 }					t_read;
 
 char				*readcline(char *prompt, t_list *history,
@@ -60,6 +61,9 @@ void				cline_clipboard(t_read *config);
 void				cline_history_motion(t_read *config);
 
 int					termcaps_putchar(int c);
+
+void				init_terminal(void);
+void				reset_input_mode(void);
 
 # define ESC 27
 # define PREVIOUS_WORD 6
