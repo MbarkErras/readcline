@@ -6,7 +6,7 @@
 /*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2019/11/17 21:28:45 by merras           ###   ########.fr       */
+/*   Updated: 2019/11/17 22:19:51 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	read_character(t_read *config)
 void	init_readcline(char *prompt, t_list *history, char **clipboard,
 		t_read *config)
 {
-	init_terminal();
 	readcline_config(config);
+	init_terminal();
 	ft_putstr(prompt ? prompt : config->prompt);
 	ft_bzero(config->buffer, 4);
 	ioctl(1, TIOCGWINSZ, &(config->winsize));
