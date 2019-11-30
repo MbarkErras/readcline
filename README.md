@@ -7,3 +7,4 @@ coding something like readline using the termcaps obsolete library
 * error handling when `*history` or `*clipboard` are `NULL`
 * memory cleanup before submitting input
 * adding support for unicode characters
+* history handling
