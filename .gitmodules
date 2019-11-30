@@ -1,0 +1,3 @@
+[submodule "libs/centropy"]
+	path = libs/centropy
+	url = https://github.com/MbarkErras/centropy
