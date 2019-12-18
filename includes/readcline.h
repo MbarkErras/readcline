@@ -39,7 +39,7 @@ typedef struct		s_read
 }					t_read;
 
 char				*readcline(char *prompt, t_list *history,
-					char **clipboard);
+					char **clipboard, char *term);
 void				init_readcline(char *prompt, t_list *hisory,
 					char **clipboard, t_read *config);
 void				flushcline(char *prompt);
