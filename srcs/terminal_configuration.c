@@ -16,19 +16,17 @@
 ** https://www.gnu.org/software/libc/manual/html_node/Noncanon-Example.html
 */
 
-static void	init_terminal_data(void)
+static void	init_terminal_data(char *term)
 {
-	char	*termtype;
 	int		success;
 
-	termtype = getenv("TERM");
-	if (!termtype)
+	if (!term)
 		exit(ft_perror(EXEC_NAME, NULL, N_TRM));
-	success = tgetent(0, termtype);
+	success = tgetent(0, term);
 	if (success < 0)
 		exit(ft_perror(EXEC_NAME, NULL, A_TRM));
 	if (!success)
-		exit(ft_perror(EXEC_NAME, termtype, S_TRM));
+		exit(ft_perror(EXEC_NAME, term, S_TRM));
 }
 
 static void	set_input_mode(void)
@@ -47,9 +45,9 @@ void		reset_input_mode(void)
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &readcline_config(NULL)->saved_attr);
 }
 
-void		init_terminal(void)
+void		init_terminal(char *term)
 {
-	init_terminal_data();
+	init_terminal_data(term);
 	tcgetattr(STDIN_FILENO, &readcline_config(NULL)->saved_attr);
 	set_input_mode();
 }

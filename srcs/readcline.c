@@ -63,18 +63,18 @@ void	read_character(t_read *config)
 	}
 }
 
-void	init_readcline(char *prompt, t_list *history, char **clipboard,
-		t_read *config)
+void	init_readcline(char *prompt, t_list *history,
+		t_read *config, char *term)
 {
 	readcline_config(config);
-	init_terminal();
+	init_terminal(term);
 	ft_putstr(prompt ? prompt : config->prompt);
 	ft_bzero(config->buffer, 4);
 	ioctl(1, TIOCGWINSZ, &(config->winsize));
 	config->prompt_size = prompt ? config->prompt_size : ft_strlen(prompt);
 	config->prompt = !prompt ? config->prompt : ft_strdup(prompt);
 	config->history = !prompt ? config->history : list_head_tail(history, 1);
-	config->clipboard = !prompt ? config->clipboard : clipboard;
+	//config->clipboard = !prompt ? config->clipboard : clipboard;
 	config->flags = 0;
 	if (!prompt)
 		ft_strdel(&config->input);
@@ -89,14 +89,15 @@ void	init_readcline(char *prompt, t_list *history, char **clipboard,
 void	flushcline(char *prompt)
 {
 	ft_putchar('\n');
-	init_readcline(prompt, NULL, NULL, readcline_config(NULL));
+	init_readcline(prompt, NULL, readcline_config(NULL), NULL);
 }
 
 char	*readcline(char *prompt, t_list *history, char **clipboard, char *term)
 {
 	t_read config;
 
-	init_readcline(prompt, history, clipboard, &config);
+	init_readcline(prompt, history, &config, term);
+	config.clipboard = clipboard;
 	while (read(0, config.buffer, 3))
 	{
 		if (IS_NEWLINE(config.buffer[0]))
