@@ -92,7 +92,7 @@ void	flushcline(char *prompt)
 	init_readcline(prompt, NULL, NULL, readcline_config(NULL));
 }
 
-char	*readcline(char *prompt, t_list *history, char **clipboard)
+char	*readcline(char *prompt, t_list *history, char **clipboard, char *term)
 {
 	t_read config;
 
