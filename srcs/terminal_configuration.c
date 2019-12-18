@@ -23,15 +23,12 @@ static void	init_terminal_data(void)
 
 	termtype = getenv("TERM");
 	if (!termtype)
-		exit(-69);
-		//exit(ft_perror(EXEC_NAME, NULL, N_TRM));
+		exit(ft_perror(EXEC_NAME, NULL, N_TRM));
 	success = tgetent(0, termtype);
 	if (success < 0)
-		exit(-69);
-		//exit(ft_perror(EXEC_NAME, NULL, A_TRM));
+		exit(ft_perror(EXEC_NAME, NULL, A_TRM));
 	if (!success)
-		exit(-69);
-		//exit(ft_perror(EXEC_NAME, termtype, S_TRM));
+		exit(ft_perror(EXEC_NAME, termtype, S_TRM));
 }
 
 static void	set_input_mode(void)
@@ -39,8 +36,7 @@ static void	set_input_mode(void)
 	struct termios	tattr;
 
 	if (!isatty(STDIN_FILENO) || !isatty(2))
-		exit(-69);
-	//exit(ft_perror(EXEC_NAME, NULL, N_TTY));
+		exit(ft_perror(EXEC_NAME, NULL, N_TTY));
 	tcgetattr(STDIN_FILENO, &tattr);
 	tattr.c_lflag &= ~(ICANON | ECHO);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &tattr);

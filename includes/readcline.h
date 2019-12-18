@@ -18,6 +18,8 @@
 # include <sys/ioctl.h>
 # include <term.h>
 
+# define EXEC_NAME "readcline"
+
 typedef struct		s_read
 {
 	int				prompt_size;
@@ -113,5 +115,21 @@ void				reset_input_mode(void);
 # define TABS_2(x) (x == 2 ? "  " : TABS_3(x))
 # define TABS_1(x) (x == 1 ? "   " : TABS_2(x))
 # define TABS_0(x) (x == 0 ? "    " : TABS_1(x))
+
+/*
+** ERROR HANDLING
+*/
+
+int					ft_perror(char *command, char *arg, int err);
+
+# define N_TRM 1
+# define A_TRM 2
+# define S_TRM 3
+# define N_TTY 4
+
+# define N_TRM_T ": specify a terminal type with setenv TERM <yourtype>"
+# define A_TRM_T ": could not access the termcap data base"
+# define S_TRM_T ": terminal type is not defined: "
+# define N_TTY_T ": not a terminal"
 
 #endif
