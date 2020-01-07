@@ -64,10 +64,10 @@ void	read_character(t_read *config)
 }
 
 void	init_readcline(char *prompt, t_list *history,
-		t_read *config, char *term)
+		t_read *config)
 {
 	readcline_config(config);
-	init_terminal(term);
+	init_terminal(config->term);
 	ft_putstr(prompt ? prompt : config->prompt);
 	ft_bzero(config->buffer, 4);
 	ioctl(1, TIOCGWINSZ, &(config->winsize));
@@ -89,14 +89,15 @@ void	init_readcline(char *prompt, t_list *history,
 void	flushcline(char *prompt)
 {
 	ft_putchar('\n');
-	init_readcline(prompt, NULL, readcline_config(NULL), NULL);
+	init_readcline(prompt, NULL, readcline_config(NULL));
 }
 
 char	*readcline(char *prompt, t_list *history, char **clipboard, char *term)
 {
 	t_read config;
 
-	init_readcline(prompt, history, &config, term);
+	config.term = term;
+	init_readcline(prompt, history, &config);
 	config.clipboard = clipboard;
 	while (read(0, config.buffer, 3))
 	{

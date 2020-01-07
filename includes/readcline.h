@@ -36,12 +36,13 @@ typedef struct		s_read
 	char			flags;
 	int				clipboard_offset;
 	struct termios	saved_attr;
+	char			*term;
 }					t_read;
 
 char				*readcline(char *prompt, t_list *history,
 					char **clipboard, char *term);
 void				init_readcline(char *prompt, t_list *hisory,
-					t_read *config, char *term);
+					t_read *config);
 void				flushcline(char *prompt);
 t_read				*readcline_config(t_read *set);
 
