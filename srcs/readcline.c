@@ -110,11 +110,13 @@ char	*readcline(char *prompt, t_list *history, char **clipboard, char *term)
 			break ;
 		}
 		if (IS_ONE_CHARACTER(config.buffer))
+		{
 			if (read_character(&config))
 			{
 				ft_strdel(config.input);
 				return (NULL);
 			}
+		}
 		else
 			read_sequence(&config);
 		ft_bzero(config.buffer, 4);
