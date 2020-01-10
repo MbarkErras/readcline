@@ -39,7 +39,7 @@ void	read_sequence(t_read *config)
 	}
 }
 
-void	read_character(t_read *config)
+int	read_character(t_read *config)
 {
 	if (IS_CLIPBOARD(config->buffer) && F_GET(config->flags, F_ESC))
 	{
@@ -55,12 +55,13 @@ void	read_character(t_read *config)
 		if (ft_isprint(config->buffer[0]))
 			cline_insert(config, config->buffer);
 		else if ((IS_DELETE(config->buffer) || IS_CTRLD(config->buffer)))
-			cline_delete(config, 1);
+			return (cline_delete(config, 1));
 		else if (IS_WORDLINE_MOTION(config->buffer))
 			cline_wordline_motion(config);
 		else if (IS_TAB(config->buffer))
 			cline_tab_space(config);
 	}
+	return (0);
 }
 
 void	init_readcline(char *prompt, t_list *history,
@@ -109,7 +110,11 @@ char	*readcline(char *prompt, t_list *history, char **clipboard, char *term)
 			break ;
 		}
 		if (IS_ONE_CHARACTER(config.buffer))
-			read_character(&config);
+			if (read_character(&config))
+			{
+				ft_strdel(config.input);
+				return (NULL);
+			}
 		else
 			read_sequence(&config);
 		ft_bzero(config.buffer, 4);

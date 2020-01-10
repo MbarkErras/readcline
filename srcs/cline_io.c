@@ -41,12 +41,15 @@ void	cline_insert(t_read *config, char *insertion)
 		move_right(config);
 }
 
-void	cline_delete_ctrld(t_read *config)
+int	cline_delete_ctrld(t_read *config)
 {
 	int		i;
 
 	if (!ft_strlen(*config->context))
+	{
+		return (1);
 		exit(EXIT_SUCCESS);
+	}
 	tputs(tgetstr("cd", NULL), 1, termcaps_putchar);
 	tputs(tgetstr("sc", NULL), 1, termcaps_putchar);
 	i = (*config->context)[config->position];
@@ -57,17 +60,14 @@ void	cline_delete_ctrld(t_read *config)
 	tputs(tgetstr("rc", NULL), 1, termcaps_putchar);
 }
 
-void	cline_delete(t_read *config, int length)
+int	cline_delete(t_read *config, int length)
 {
 	int		i;
 
 	if (IS_CTRLD(config->buffer))
-	{
-		cline_delete_ctrld(config);
-		return ;
-	}
+		return (cline_delete_ctrld(config));
 	if (config->position < (size_t)length)
-		return ;
+		return (0);
 	i = -1;
 	while (++i < length)
 		move_left(config);
@@ -79,4 +79,5 @@ void	cline_delete(t_read *config, int length)
 	config->position + length, 1);
 	ft_putstr(*config->context + config->position);
 	tputs(tgetstr("rc", NULL), 1, termcaps_putchar);
+	return (0);
 }

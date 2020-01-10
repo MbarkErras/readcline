@@ -56,8 +56,8 @@ void				cline_home_end(t_read *config);
 size_t				line_length(char *string, int end);
 
 void				cline_insert(t_read *config, char *insertion);
-void				cline_delete(t_read *config, int length);
-void				cline_delete_ctrld(t_read *config);
+int					cline_delete(t_read *config, int length);
+int					cline_delete_ctrld(t_read *config);
 
 void				cline_clipboard(t_read *config);
 
