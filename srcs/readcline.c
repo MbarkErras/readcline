@@ -97,6 +97,7 @@ char	*readcline(char *prompt, t_list *history, char **clipboard, char *term)
 {
 	t_read config;
 
+	ft_bzero(&config, sizeof(config));
 	config.term = term;
 	init_readcline(prompt, history, &config);
 	config.clipboard = clipboard;
@@ -113,7 +114,7 @@ char	*readcline(char *prompt, t_list *history, char **clipboard, char *term)
 		{
 			if (read_character(&config))
 			{
-				ft_strdel(config.input);
+				ft_strdel(&config.input);
 				return (NULL);
 			}
 		}

@@ -57,8 +57,8 @@ void	move_left(t_read *config)
 
 void	move_right(t_read *config)
 {
-	if ((config->column == config->winsize.ws_col ||
-	IS_NEWLINE((*config->context)[config->position + 1])))
+	if (config->column == config->winsize.ws_col ||
+	IS_NEWLINE((*config->context)[config->position + 1]))
 	{
 		tputs(tgetstr("do", NULL), 1, termcaps_putchar);
 		config->position++;
