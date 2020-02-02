@@ -6,7 +6,7 @@
 /*   By: merras <merras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2020/02/02 04:09:27 by merras           ###   ########.fr       */
+/*   Updated: 2020/02/02 07:00:12 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	read_character(t_read *config)
 int	init_readcline(t_readcline _config, t_read *config)
 {
 	readcline_config(config);
-	if (init_terminal(config->term))
+	if (init_terminal(_config.term))
 		return (1);
 	ft_putstr(_config.prompt ? _config.prompt : config->prompt);
 	ft_bzero(config->buffer, 4);
