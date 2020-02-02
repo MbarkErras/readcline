@@ -13,23 +13,24 @@ SRCS=cline_clipboard_utilities.c \
 
 OBJS=$(SRCS:.c=.o)
 
-LIBS_DIR=libs
+LIBS_DIR=libraries
 OBJS_DIR=build
-SRCS_DIR=srcs
+SRCS_DIR=sources
 OBJS_PATH=$(addprefix $(OBJS_DIR)/, $(OBJS))
 SRCS_PATH=$(addprefix $(SRCS_DIR)/, $(SRCS))
-INCLUDES=includes
+INCLUDES=includes modules/centropy/includes modules/cdata_structures/shared_includes
 
-FLAGS= #-Wall -Werror -Wextra
+FLAGS= -Wall -Werror -Wextra
+INCLUDES_FLAGS =$(addprefix -I, $(INCLUDES))
 
 all: $(NAME)
 
-$(NAME): $(OBJS_PATH) $(INCLUDES)/readcline.h 
+$(NAME): $(OBJS_PATH)
 	ar rc  $(NAME) $(OBJS_PATH)
 	ranlib $(NAME)
 
 $(OBJS_PATH): $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c | $(OBJS_DIR)
-	gcc $(FLAGS) -I$(INCLUDES) -I$(INCLUDES) -c $< -o $@
+	gcc $(FLAGS) $(INCLUDES_FLAGS) -c $< -o $@
 
 $(OBJS_DIR):
 	mkdir $(OBJS_DIR)

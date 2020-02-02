@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readcline.c                                        :+:      :+:    :+:   */
+/*   readcline.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: merras <merras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2019/11/17 21:30:44 by merras           ###   ########.fr       */
+/*   Updated: 2020/02/02 04:10:00 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef READCLINE_H
 # define READCLINE_H
 
-# include "simplist.h"
 # include "centropy.h"
+# include "lists_wrappers.h"
 # include <sys/ioctl.h>
 # include <term.h>
 
-# define EXEC_NAME "readcline"
+typedef struct	s_readcline
+{
+	t_dstruct_node	*history;
+	char			*prompt;
+	char			*term;
+	char			**clipboard;
+}				t_readcline;
+
 
 typedef struct		s_read
 {
 	int				prompt_size;
 	char			*prompt;
-	t_list			*history;
+	t_dstruct_node	*history;
 	char			**clipboard;
 	char			buffer[4];
 	char			**context;
@@ -39,10 +46,8 @@ typedef struct		s_read
 	char			*term;
 }					t_read;
 
-char				*readcline(char *prompt, t_list *history,
-					char **clipboard, char *term);
-void				init_readcline(char *prompt, t_list *hisory,
-					t_read *config);
+int					readcline(t_readcline _config, char **line);
+int					init_readcline(t_readcline _config, t_read *config);
 void				flushcline(char *prompt);
 t_read				*readcline_config(t_read *set);
 
@@ -65,7 +70,7 @@ void				cline_history_motion(t_read *config);
 
 int					termcaps_putchar(int c);
 
-void				init_terminal(char *term);
+int					init_terminal(char *term);
 void				reset_input_mode(void);
 
 # define ESC 27

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cline_io.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: merras <merras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 00:07:48 by merras            #+#    #+#             */
-/*   Updated: 2019/10/25 22:41:22 by merras           ###   ########.fr       */
+/*   Updated: 2020/02/02 00:23:38 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	cline_delete_ctrld(t_read *config)
 	*config->context + config->position + 1, 1);
 	ft_putstr(*config->context + config->position);
 	tputs(tgetstr("rc", NULL), 1, termcaps_putchar);
+	return (0);
 }
 
 int	cline_delete(t_read *config, int length)

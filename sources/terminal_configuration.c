@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   terminal_configuration.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merras <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: merras <merras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/17 21:18:12 by merras            #+#    #+#             */
-/*   Updated: 2019/11/17 22:19:56 by merras           ###   ########.fr       */
+/*   Updated: 2020/02/02 04:18:16 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,30 @@
 ** https://www.gnu.org/software/libc/manual/html_node/Noncanon-Example.html
 */
 
-static void	init_terminal_data(char *term)
+static int init_terminal_data(char *term)
 {
 	int		success;
 
 	if (!term)
-		exit(ft_perror(EXEC_NAME, NULL, N_TRM));
+		return (ft_perror("readcline", NULL, N_TRM));
 	success = tgetent(0, term);
 	if (success < 0)
-		exit(ft_perror(EXEC_NAME, NULL, A_TRM));
+		return (ft_perror("readcline", NULL, A_TRM));
 	if (!success)
-		exit(ft_perror(EXEC_NAME, term, S_TRM));
+		return (ft_perror("readcline", term, S_TRM));
+	return (0);
 }
 
-static void	set_input_mode(void)
+static int	set_input_mode(void)
 {
 	struct termios	tattr;
 
 	if (!isatty(STDIN_FILENO) || !isatty(2))
-		exit(ft_perror(EXEC_NAME, NULL, N_TTY));
+		return (ft_perror("readcline", NULL, N_TTY));
 	tcgetattr(STDIN_FILENO, &tattr);
 	tattr.c_lflag &= ~(ICANON | ECHO);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &tattr);
+	return (0);
 }
 
 void		reset_input_mode(void)
@@ -45,9 +47,12 @@ void		reset_input_mode(void)
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &readcline_config(NULL)->saved_attr);
 }
 
-void		init_terminal(char *term)
+int		init_terminal(char *term)
 {
-	init_terminal_data(term);
+	if (init_terminal_data(term))
+		return (1);
 	tcgetattr(STDIN_FILENO, &readcline_config(NULL)->saved_attr);
-	set_input_mode();
+	if (set_input_mode())
+		return (1);
+	return (0);
 }
