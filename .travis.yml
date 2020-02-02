@@ -1,4 +1,4 @@
 language: c
 compiler: gcc
 script:
-    git submodule update --init & make
+    git submodule update --init && make
