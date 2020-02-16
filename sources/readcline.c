@@ -6,7 +6,7 @@
 /*   By: merras <merras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2020/02/02 07:00:12 by merras           ###   ########.fr       */
+/*   Updated: 2020/02/16 09:29:55 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ t_read	*readcline_config(t_read *set)
 		config = set;
 	return (config);
 }
-
-
 
 void	read_sequence(t_read *config)
 {
@@ -64,12 +62,21 @@ int	read_character(t_read *config)
 	return (0);
 }
 
+void	flushcline(char *prompt)
+{
+	t_read *config = readcline_config(NULL);
+	ft_putchar('\n');
+	// here we gotta do some cleanup yeah for `prompt` and `input`
+	init_readcline((t_readcline){config->history, prompt,
+		config->prompt, config->clipboard}, config);
+}
+
 int	init_readcline(t_readcline _config, t_read *config)
 {
 	readcline_config(config);
 	if (init_terminal(_config.term))
 		return (1);
-	ft_putstr(_config.prompt ? _config.prompt : config->prompt);
+	ft_putstr(_config.prompt);
 	ft_bzero(config->buffer, 4);
 	ioctl(1, TIOCGWINSZ, &(config->winsize));
 	config->prompt_size = ft_strlen(_config.prompt);
@@ -85,14 +92,6 @@ int	init_readcline(t_readcline _config, t_read *config)
 	config->flags = 0;
 	return (0);
 }
-
-/*
-void	flushcline(char *prompt)
-{
-	ft_putchar('\n');
-	init_readcline(prompt, NULL, readcline_config(NULL));
-}
-*/
 
 int		readcline(t_readcline _config, char **line)
 {
