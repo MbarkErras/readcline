@@ -6,7 +6,7 @@
 /*   By: merras <merras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:51:57 by merras            #+#    #+#             */
-/*   Updated: 2020/02/16 11:04:09 by merras           ###   ########.fr       */
+/*   Updated: 2020/02/16 11:08:47 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	flushcline(char *prompt)
 	t_read *config = readcline_config(NULL);
 	ft_putchar('\n');
 	printf(">> %s\n", config->term);
-	// here we gotta do some cleanup yeah for `prompt` and `input`
+	// here we gotta do some cleanup yeah for `prompt` and `input` and `term`
 	init_readcline((t_readcline){config->history, prompt,
 		config->term, config->clipboard}, config);
 }
@@ -90,6 +90,7 @@ int	init_readcline(t_readcline _config, t_read *config)
 	config->input = ft_strnew(0);
 	config->context = &(config->input);
 	config->position = 0;
+	config->term = ft_strdup(_config.term);
 	config->column = config->prompt_size + 1;
 	config->row = 0;
 	config->flags = 0;
