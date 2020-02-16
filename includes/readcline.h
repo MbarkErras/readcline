@@ -6,7 +6,7 @@
 /*   By: merras <merras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 18:36:14 by merras            #+#    #+#             */
-/*   Updated: 2020/02/02 04:10:00 by merras           ###   ########.fr       */
+/*   Updated: 2020/02/16 09:41:10 by merras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,9 @@ int					ft_perror(char *command, char *arg, int err);
 # define S_TRM 3
 # define N_TTY 4
 
-# define N_TRM_T ": specify a terminal type with setenv TERM <yourtype>"
-# define A_TRM_T ": could not access the termcap data base"
-# define S_TRM_T ": terminal type is not defined: "
-# define N_TTY_T ": not a terminal"
+# define N_TRM_T "specify a terminal type with setenv TERM <yourtype>"
+# define A_TRM_T "could not access the termcap data base"
+# define S_TRM_T "terminal type is not defined: "
+# define N_TTY_T "not a terminal"
 
 #endif
